@@ -1,8 +1,7 @@
 @use "@openedx/paragon/styles/css/core/custom-media-breakpoints.css" as paragonCustomMediaBreakpoints;
 
-@import "~@edx/brand/paragon/fonts";
-@import "~@edx/brand/paragon/overrides";
 @import "~@edx/frontend-component-header/dist/index";
+@import "~@edx/brand/paragon/authoring";
 @import "assets/scss/variables";
 @import "assets/scss/form";
 @import "assets/scss/utilities";
