@@ -131,6 +131,7 @@ const CardTitle: React.FC<CardTitleProps> = ({
 interface BaseProps {
   displayName: string;
   org: string;
+  organizationDisplayName?: string;
   number: string;
   run?: string;
   lmsLink?: string | null;
@@ -165,6 +166,7 @@ const CardItem: React.FC<Props> = ({
   lmsLink = '',
   rerunLink = '',
   org,
+  organizationDisplayName,
   number,
   run = '',
   isLibraries = false,
@@ -202,7 +204,8 @@ const CardItem: React.FC<Props> = ({
   const title = (displayName ?? '').trim().length ? displayName : courseKey;
 
   const getSubtitle = useCallback(() => {
-    let subtitle = isLibraries ? <>{org} / {number}</> : <>{org} / {number} / {run}</>;
+    const displayOrg = organizationDisplayName || org;
+    let subtitle = isLibraries ? <>{org} / {number}</> : <>{displayOrg} / {number} / {run}</>;
     if (isMigrated && migratedToKey) {
       const migratedToKeyObj = parseLibraryKey(migratedToKey);
       subtitle = (
@@ -213,7 +216,7 @@ const CardItem: React.FC<Props> = ({
       );
     }
     return subtitle;
-  }, [isLibraries, org, number, run, migratedToKey, isMigrated]);
+  }, [isLibraries, org, organizationDisplayName, number, run, migratedToKey, isMigrated]);
 
   const collectionLink = () => {
     let libUrl = `/library/${migratedToKey}`;

@@ -12,6 +12,7 @@ export const getCourseRerunUrl = (courseId: string) => new URL(
   getApiBaseUrl(),
 ).href;
 export const getOrganizationsUrl = () => new URL('organizations', getApiBaseUrl()).href;
+export const getOrganizationDisplayNamesUrl = () => new URL('organizations/display-names', getApiBaseUrl()).href;
 export const getClipboardUrl = () => `${getApiBaseUrl()}/api/content-staging/v1/clipboard/`;
 export const getTagsCountApiUrl = (contentPattern: string) => new URL(
   `api/content_tagging/v1/object_tag_counts/${contentPattern}/?count_implicit`,
@@ -26,6 +27,18 @@ export async function getOrganizations(): Promise<string[]> {
     getOrganizationsUrl(),
   );
   return camelCaseObject(data);
+}
+
+/**
+ * Gets full Organization.name values keyed by their technical short names.
+ */
+export async function getOrganizationDisplayNames(): Promise<Record<string, string>> {
+  const { data } = await getAuthenticatedHttpClient().get(
+    getOrganizationDisplayNamesUrl(),
+  );
+  // Map keys are technical course-key identifiers, so camel-casing them would
+  // stop them matching the values returned by /organizations.
+  return data;
 }
 
 /**
