@@ -29,8 +29,9 @@ class TypeaheadDropdown extends React.Component {
   shouldComponentUpdate(nextProps) {
     if (this.props.value !== nextProps.value && nextProps.value !== '') {
       const opt = this.props.options.find((o) => o === nextProps.value);
-      if (opt && opt !== this.state.displayValue) {
-        this.setState({ displayValue: opt });
+      const displayValue = this.getOptionLabel(opt);
+      if (opt && displayValue !== this.state.displayValue) {
+        this.setState({ displayValue });
       }
       return false;
     }
@@ -39,11 +40,20 @@ class TypeaheadDropdown extends React.Component {
   }
 
   // eslint-disable-next-line react/sort-comp
+  getOptionLabel(option) {
+    return this.props.optionLabels[option] || option;
+  }
+
+  // eslint-disable-next-line react/sort-comp
   getItems(strToFind = '') {
     let { options } = this.props;
 
     if (strToFind.length > 0) {
-      options = options.filter((option) => (option.toLowerCase().includes(strToFind.toLowerCase())));
+      const normalizedSearch = strToFind.toLowerCase();
+      options = options.filter((option) => (
+        option.toLowerCase().includes(normalizedSearch)
+        || this.getOptionLabel(option).toLowerCase().includes(normalizedSearch)
+      ));
     }
 
     const sortedOptions = sortBy(options, (option) => option.toLowerCase());
@@ -61,10 +71,10 @@ class TypeaheadDropdown extends React.Component {
         }}
         value={opt}
         key={opt}
-        title={opt}
+        title={this.getOptionLabel(opt)}
         onClick={(e) => { this.handleItemClick(e); }}
       >
-        {opt}
+        {this.getOptionLabel(opt)}
       </button>
     ));
   }
@@ -79,17 +89,20 @@ class TypeaheadDropdown extends React.Component {
     }
 
     const opt = this.props.options.find((o) => o === value);
-    if (opt && opt !== this.state.displayValue) {
-      this.setState({ displayValue: opt });
+    const displayValue = this.getOptionLabel(opt);
+    if (opt && displayValue !== this.state.displayValue) {
+      this.setState({ displayValue });
     }
   }
 
   setDisplayValue(value) {
     const normalized = value.toLowerCase();
-    const opt = this.props.options.find((o) => o.toLowerCase() === normalized);
+    const opt = this.props.options.find((o) => (
+      o.toLowerCase() === normalized || this.getOptionLabel(o).toLowerCase() === normalized
+    ));
     if (opt) {
       this.setValue(opt);
-      this.setState({ displayValue: opt });
+      this.setState({ displayValue: this.getOptionLabel(opt) });
     } else {
       this.setValue(value);
       this.setState({ displayValue: value });
@@ -235,6 +248,7 @@ class TypeaheadDropdown extends React.Component {
 
 TypeaheadDropdown.defaultProps = {
   options: null,
+  optionLabels: {},
   floatingLabel: null,
   handleFocus: null,
   handleChange: null,
@@ -254,6 +268,7 @@ TypeaheadDropdown.propTypes = {
   noOptionsMessage: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string),
+  optionLabels: PropTypes.objectOf(PropTypes.string),
   floatingLabel: PropTypes.string,
   handleFocus: PropTypes.func,
   handleChange: PropTypes.func,

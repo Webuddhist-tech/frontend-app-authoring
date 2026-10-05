@@ -21,7 +21,7 @@ describe('<CardItem />', () => {
   it('should render course details for non-library course', () => {
     const props = studioHomeMock.archivedCourses[0];
     render(<CardItem {...props} />);
-    expect(screen.getByText(`${props.org} / ${props.number} / ${props.run}`)).toBeInTheDocument();
+    expect(screen.getByText(`${props.organizationDisplayName} / ${props.number} / ${props.run}`)).toBeInTheDocument();
   });
 
   it('should render correct links for non-library course', () => {

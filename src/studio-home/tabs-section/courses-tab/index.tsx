@@ -32,6 +32,7 @@ interface Props {
     lmsLink: string | null;
     number: string;
     org: string;
+    organizationDisplayName: string;
     rerunLink: string | null;
     run: string;
     url: string;
@@ -138,6 +139,7 @@ const CoursesTab: React.FC<Props> = ({
                 displayName,
                 lmsLink,
                 org,
+                organizationDisplayName,
                 rerunLink,
                 number,
                 run,
@@ -150,6 +152,7 @@ const CoursesTab: React.FC<Props> = ({
                   lmsLink={lmsLink}
                   rerunLink={rerunLink}
                   org={org}
+                  organizationDisplayName={organizationDisplayName}
                   number={number}
                   run={run}
                   url={url}
