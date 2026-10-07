@@ -12,6 +12,7 @@ const slice = createSlice({
     },
     savingStatus: '',
     organizations: [],
+    organizationDisplayNames: {},
     createOrRerunCourse: {
       courseData: {},
       courseRerunData: {},
@@ -22,6 +23,9 @@ const slice = createSlice({
   reducers: {
     fetchOrganizations: (state, { payload }) => {
       state.organizations = payload;
+    },
+    fetchOrganizationDisplayNames: (state, { payload }) => {
+      state.organizationDisplayNames = payload;
     },
     updateLoadingStatuses: (state, { payload }) => {
       state.loadingStatuses = { ...state.loadingStatuses, ...payload };
@@ -46,6 +50,7 @@ const slice = createSlice({
 
 export const {
   fetchOrganizations,
+  fetchOrganizationDisplayNames,
   updatePostErrors,
   updateCourseRerunData,
   updateLoadingStatuses,

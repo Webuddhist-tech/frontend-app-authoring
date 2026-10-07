@@ -7,6 +7,8 @@ import {
   createOrRerunCourse,
   getApiBaseUrl,
   getOrganizations,
+  getOrganizationDisplayNames,
+  getOrganizationDisplayNamesUrl,
   getCreateOrRerunCourseUrl,
   getCourseRerunUrl,
   getCourseRerun,
@@ -41,6 +43,15 @@ describe('generic api calls', () => {
 
     expect(axiosMock.history.get[0].url).toEqual(queryUrl);
     expect(result).toEqual(organizationsData);
+  });
+
+  it('should get organization display names', async () => {
+    const organizationDisplayNames = { Khyentse_Foundation: 'Khyentse Foundation' };
+    axiosMock.onGet(getOrganizationDisplayNamesUrl()).reply(200, organizationDisplayNames);
+    const result = await getOrganizationDisplayNames();
+
+    expect(axiosMock.history.get[0].url).toEqual(getOrganizationDisplayNamesUrl());
+    expect(result).toEqual(organizationDisplayNames);
   });
 
   it('should get course rerun', async () => {

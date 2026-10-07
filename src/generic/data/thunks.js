@@ -1,6 +1,7 @@
 import { RequestStatus } from '../../data/constants';
 import {
   fetchOrganizations,
+  fetchOrganizationDisplayNames,
   updatePostErrors,
   updateLoadingStatuses,
   updateRedirectUrlObj,
@@ -10,6 +11,7 @@ import {
 import {
   createOrRerunCourse,
   getOrganizations,
+  getOrganizationDisplayNames,
   getCourseRerun,
 } from './api';
 
@@ -21,6 +23,17 @@ export function fetchOrganizationsQuery() {
       dispatch(updateLoadingStatuses({ organizationLoadingStatus: RequestStatus.SUCCESSFUL }));
     } catch (error) {
       dispatch(updateLoadingStatuses({ organizationLoadingStatus: RequestStatus.FAILED }));
+    }
+  };
+}
+
+export function fetchOrganizationDisplayNamesQuery() {
+  return async (dispatch) => {
+    try {
+      const organizationDisplayNames = await getOrganizationDisplayNames();
+      dispatch(fetchOrganizationDisplayNames(organizationDisplayNames));
+    } catch (error) {
+      // Full names are presentation-only. The selector safely falls back to the identifier.
     }
   };
 }
