@@ -28,6 +28,7 @@ import { PreviewLibraryXBlockChanges } from '@src/course-unit/preview-changes';
 import { UpstreamInfoIcon } from '@src/generic/upstream-info-icon';
 import type { XBlock } from '@src/data/types';
 import { invalidateLinksQuery } from '@src/course-libraries/data/apiHooks';
+import { SectionScheduleBadge } from '@src/course-schedule';
 import messages from './messages';
 
 interface SectionCardProps {
@@ -324,6 +325,12 @@ const SectionCard = ({
                   </Bubble>
                   <p className="m-0 text-black">{messages.sectionHighlightsBadge.defaultMessage}</p>
                 </Button>
+                <SectionScheduleBadge
+                  courseId={courseId!}
+                  sectionId={id}
+                  displayName={displayName}
+                  isSelfPaced={isSelfPaced}
+                />
               </div>
               <XBlockStatus
                 isSelfPaced={isSelfPaced}
