@@ -9,7 +9,9 @@ import {
 import { Link } from 'react-router-dom';
 import { AppContext } from '@edx/frontend-platform/react';
 
+import StatusBarItem from './StatusBarItem';
 import { ContentTagsDrawerSheet } from '../../content-tags-drawer';
+import { CourseScheduleStatusItem } from '../../course-schedule';
 import TagCount from '../../generic/tag-count';
 import { useHelpUrls } from '../../help-urls/hooks';
 import { useWaffleFlags } from '../../data/apiHooks';
@@ -17,24 +19,6 @@ import { VIDEO_SHARING_OPTIONS } from '../constants';
 import { useContentTagsCount } from '../../generic/data/apiHooks';
 import messages from './messages';
 import { getVideoSharingOptionText } from '../utils';
-
-const StatusBarItem = ({ title, children }) => (
-  <div className="d-flex flex-column justify-content-between">
-    <h5>{title}</h5>
-    <div className="d-flex align-items-center">
-      {children}
-    </div>
-  </div>
-);
-
-StatusBarItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node,
-};
-
-StatusBarItem.defaultProps = {
-  children: null,
-};
 
 const StatusBar = ({
   statusBarData,
@@ -136,6 +120,7 @@ const StatusBar = ({
             </Hyperlink>
           </div>
         </StatusBarItem>
+        <CourseScheduleStatusItem courseId={courseId} isSelfPaced={isSelfPaced} />
         {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
           <StatusBarItem title={intl.formatMessage(messages.courseTagsTitle)}>
             <div className="d-flex align-items-center">
