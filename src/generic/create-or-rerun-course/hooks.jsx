@@ -10,12 +10,13 @@ import { RequestStatus, MAX_TOTAL_LENGTH, TOTAL_LENGTH_KEY } from '../../data/co
 import { getStudioHomeData } from '../../studio-home/data/selectors';
 import {
   getRedirectUrlObj,
+  getOrganizationDisplayNames,
   getOrganizations,
   getPostErrors,
   getSavingStatus,
 } from '../data/selectors';
 import { updateSavingStatus, updatePostErrors } from '../data/slice';
-import { fetchOrganizationsQuery } from '../data/thunks';
+import { fetchOrganizationDisplayNamesQuery, fetchOrganizationsQuery } from '../data/thunks';
 import messages from './messages';
 
 const useCreateOrRerunCourse = (initialValues) => {
@@ -25,6 +26,7 @@ const useCreateOrRerunCourse = (initialValues) => {
   const redirectUrlObj = useSelector(getRedirectUrlObj);
   const createOrRerunCourseSavingStatus = useSelector(getSavingStatus);
   const allOrganizations = useSelector(getOrganizations);
+  const organizationDisplayNames = useSelector(getOrganizationDisplayNames);
   const postErrors = useSelector(getPostErrors);
   const {
     canCreateOrganizations,
@@ -81,6 +83,7 @@ const useCreateOrRerunCourse = (initialValues) => {
     if (canCreateOrganizations) {
       dispatch(fetchOrganizationsQuery());
     }
+    dispatch(fetchOrganizationDisplayNamesQuery());
   }, []);
 
   useEffect(() => {
@@ -126,6 +129,7 @@ const useCreateOrRerunCourse = (initialValues) => {
     isFormFilled,
     isFormInvalid,
     organizations,
+    organizationDisplayNames,
     showErrorBanner,
     dispatch,
     handleBlur,

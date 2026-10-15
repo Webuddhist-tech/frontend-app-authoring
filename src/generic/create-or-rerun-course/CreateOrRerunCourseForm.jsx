@@ -44,6 +44,7 @@ const CreateOrRerunCourseForm = ({
     isFormFilled,
     isFormInvalid,
     organizations,
+    organizationDisplayNames,
     showErrorBanner,
     dispatch,
     handleBlur,
@@ -153,9 +154,8 @@ const CreateOrRerunCourseForm = ({
   };
 
   const handleCustomBlurForDropdown = (e) => {
-    // it needs to correct handleOnChange Form.Autosuggest
-    const { value, name } = e.target;
-    setFieldValue(name, value);
+    // TypeaheadDropdown already stores the raw organization identifier through handleChange.
+    // Do not replace it with the visible Organization.name label on blur.
     handleBlur(e);
   };
 
@@ -166,6 +166,7 @@ const CreateOrRerunCourseForm = ({
       value={field.value}
       controlClassName={classNames({ 'is-invalid': hasErrorField(field.name) })}
       options={field.options}
+      optionLabels={organizationDisplayNames}
       placeholder={field.placeholder}
       handleBlur={handleCustomBlurForDropdown}
       handleChange={(value) => setFieldValue(field.name, value)}
@@ -177,7 +178,7 @@ const CreateOrRerunCourseForm = ({
   ) : (
     <Dropdown className="mr-2">
       <Dropdown.Toggle id={`${field.name}-dropdown`} variant="outline-primary">
-        {field.value || intl.formatMessage(messages.courseOrgNoOptions)}
+        {organizationDisplayNames[field.value] || field.value || intl.formatMessage(messages.courseOrgNoOptions)}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {field.options?.map((value) => (
@@ -185,7 +186,7 @@ const CreateOrRerunCourseForm = ({
             key={value}
             onClick={() => setFieldValue(field.name, value)}
           >
-            {value}
+            {organizationDisplayNames[value] || value}
           </Dropdown.Item>
         ))}
       </Dropdown.Menu>

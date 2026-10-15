@@ -63,7 +63,7 @@ describe('common/OrganizationDropdown.jsx', () => {
     const newProps = { ...defaultProps, options: ['opt1', 'opt2'] };
     renderComponent(newProps);
     const formInput = screen.getByTestId('formControl');
-    fireEvent.click(formInput);
+    fireEvent.click(screen.getByTestId('expand-more-button'));
     const optionsList = within(screen.getByTestId('dropdown-container')).getAllByRole('button');
     fireEvent.click(optionsList.at([0]));
     expect(formInput.value).toEqual(newProps.options[0]);
@@ -81,6 +81,25 @@ describe('common/OrganizationDropdown.jsx', () => {
     expect(longOrgButton.title).toEqual(longOrgName);
     fireEvent.click(longOrgButton);
     expect(formInput.value).toEqual(longOrgName);
+  });
+  it('shows a full organization name while returning its technical identifier', () => {
+    const handleChange = jest.fn();
+    const newProps = {
+      ...defaultProps,
+      options: ['Khyentse_Foundation'],
+      optionLabels: { Khyentse_Foundation: 'Khyentse Foundation' },
+      handleChange,
+    };
+    renderComponent(newProps);
+    const formInput = screen.getByTestId('formControl');
+    fireEvent.click(screen.getByTestId('expand-more-button'));
+    const organizationButton = within(screen.getByTestId('dropdown-container')).getByRole('button', {
+      name: 'Khyentse Foundation',
+    });
+
+    fireEvent.click(organizationButton);
+    expect(formInput.value).toEqual('Khyentse Foundation');
+    expect(handleChange).toHaveBeenCalledWith('Khyentse_Foundation');
   });
   it('toggles options list', async () => {
     const newProps = { ...defaultProps, options: ['opt1', 'opt2'] };
